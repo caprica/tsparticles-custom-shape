@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback } from "react"
+import { Container, Engine } from 'tsparticles-engine'
+import { loadFull } from "tsparticles"
+import Particles from "react-particles"
+import { bubbleTextShape } from "./particles/bubble-text-shape"
+import { particlesConfig } from "./particles/particles-config"
+import "./App.css"
 
 function App() {
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine)
+    engine.addShape("bubble-text", bubbleTextShape)
+  }, [])
+
+  const particlesLoaded = useCallback(
+    async (container: Container | undefined) => {},
+    []
+  )
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>tsParticles Custom Shape Opacity</h1>
+      <main>
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          loaded={particlesLoaded}
+          options={particlesConfig}
+        />
+      </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
